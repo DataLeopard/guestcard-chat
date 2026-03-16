@@ -1,0 +1,11 @@
+{
+  "name": "guestcard-chat",
+  "template": "react-app",
+  "description": "Conversational chatbot that qualifies apartment leads, builds guest cards, and emails them to properties — embeddable in ads and landing pages",
+  "createdAt": "2026-03-16T19:00:00.000Z",
+  "language": "javascript",
+  "category": "web",
+  "status": "new",
+  "features": [],
+  "port": 5175
+}

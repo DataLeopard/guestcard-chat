@@ -1,0 +1,20 @@
+{
+  "name": "guestcard-chat",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Conversational chatbot that qualifies apartment leads, builds guest cards, and emails them to properties — embeddable in ads and landing pages",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^6.0.0"
+  }
+}

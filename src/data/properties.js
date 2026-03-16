@@ -1,0 +1,86 @@
+export const properties = [
+  {
+    id: 1,
+    name: "The Retreat at Georgetown",
+    address: "100 River Bend Dr, Georgetown, TX 78626",
+    beds: [1, 2, 3],
+    rent: { min: 1250, max: 2100 },
+    petFriendly: true,
+    petDeposit: 300,
+    petRent: 25,
+    amenities: ["Pool", "Fitness Center", "Dog Park", "EV Charging", "In-Unit W/D"],
+    email: "leasing@retreatgeorgetown.com",
+    phone: "(512) 555-0142",
+    manager: "Maria Gonzalez",
+    specials: "$200 off first month with this guest card",
+  },
+  {
+    id: 2,
+    name: "Rivery Park Apartments",
+    address: "250 Rivery Blvd, Georgetown, TX 78628",
+    beds: [1, 2],
+    rent: { min: 1100, max: 1750 },
+    petFriendly: true,
+    petDeposit: 250,
+    petRent: 20,
+    amenities: ["Pool", "Business Center", "Covered Parking", "Trail Access"],
+    email: "info@riverypark.com",
+    phone: "(512) 555-0287",
+    manager: "Jake Williams",
+    specials: "Waived application fee through March",
+  },
+  {
+    id: 3,
+    name: "Wolf Ranch Residences",
+    address: "1015 Wolf Ranch Pkwy, Georgetown, TX 78628",
+    beds: [1, 2, 3],
+    rent: { min: 1400, max: 2400 },
+    petFriendly: true,
+    petDeposit: 400,
+    petRent: 35,
+    amenities: ["Resort Pool", "Fitness Center", "Game Room", "Package Lockers", "Attached Garage"],
+    email: "leasing@wolfranchresidences.com",
+    phone: "(512) 555-0391",
+    manager: "Sarah Chen",
+    specials: "Up to 6 weeks free on select units",
+  },
+  {
+    id: 4,
+    name: "San Gabriel Flats",
+    address: "430 San Gabriel Village Blvd, Georgetown, TX 78626",
+    beds: [1, 2],
+    rent: { min: 975, max: 1450 },
+    petFriendly: false,
+    petDeposit: 0,
+    petRent: 0,
+    amenities: ["Pool", "Laundry Facility", "Gated Access"],
+    email: "leasing@sangabrielflats.com",
+    phone: "(512) 555-0558",
+    manager: "Tom Bradley",
+    specials: "No deposit for qualified applicants",
+  },
+  {
+    id: 5,
+    name: "The Preserve at Georgetown",
+    address: "800 DB Wood Rd, Georgetown, TX 78628",
+    beds: [2, 3, 4],
+    rent: { min: 1650, max: 2800 },
+    petFriendly: true,
+    petDeposit: 350,
+    petRent: 30,
+    amenities: ["Pool", "Playground", "Fitness Center", "Dog Park", "Detached Garage", "Fenced Yards"],
+    email: "info@preservegeorgetown.com",
+    phone: "(512) 555-0614",
+    manager: "Angela Price",
+    specials: "1 month free on 14-month leases",
+  },
+];
+
+export function matchProperties(criteria) {
+  return properties.filter(p => {
+    if (criteria.beds && !p.beds.includes(criteria.beds)) return false;
+    if (criteria.budget && p.rent.min > criteria.budget) return false;
+    if (criteria.pets && !p.petFriendly) return false;
+    return true;
+  });
+}
