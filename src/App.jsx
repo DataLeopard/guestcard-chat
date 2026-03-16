@@ -109,9 +109,34 @@ export default function App() {
     const body = encodeURIComponent(bodyLines.filter(Boolean).join('\n'));
     const emails = selectedList.map(p => p.email).join(',');
 
-    // Simulate brief send delay, then open mailto
+    // Simulate brief send delay, then open mailto and save to localStorage
     setTimeout(() => {
       window.open(`mailto:${emails}?subject=${subject}&body=${body}`, '_blank');
+
+      // Save guest card to localStorage for dashboard
+      const record = {
+        id: Date.now(),
+        submittedAt: new Date().toISOString(),
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        moveIn: formData.moveIn,
+        beds: formData.beds,
+        budget: formData.budget,
+        pets: formData.pets === false ? 'None' : formData.pets,
+        extras: formData.extras?.length ? formData.extras.join(', ') : 'None',
+        notes: formData.notes && formData.notes !== '(none)' ? formData.notes : '',
+        sentTo: selectedList.map(p => p.name).join(', '),
+        sentToEmails: selectedList.map(p => p.email).join(', '),
+        propertyCount: selectedList.length,
+        status: 'sent',
+      };
+      const existing = JSON.parse(localStorage.getItem('guestcard_submissions') || '[]');
+      existing.push(record);
+      localStorage.setItem('guestcard_submissions', JSON.stringify(existing));
+      // Dispatch storage event for same-tab listeners
+      window.dispatchEvent(new StorageEvent('storage', { key: 'guestcard_submissions' }));
+
       setSending(false);
       setSent(true);
       setMessages(prev => [...prev, {
