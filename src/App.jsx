@@ -109,10 +109,12 @@ export default function App() {
     const body = encodeURIComponent(bodyLines.filter(Boolean).join('\n'));
     const emails = selectedList.map(p => p.email).join(',');
 
-    // Simulate brief send delay, then open mailto and save to localStorage
-    setTimeout(() => {
-      window.open(`mailto:${emails}?subject=${subject}&body=${body}`, '_blank');
+    // Open mailto immediately (synchronous with user click to avoid popup blocker)
+    const mailtoUrl = `mailto:${emails}?subject=${subject}&body=${body}`;
+    window.location.href = mailtoUrl;
 
+    // Simulate brief send delay for UI feedback, then save to localStorage
+    setTimeout(() => {
       // Save guest card to localStorage for dashboard
       const record = {
         id: Date.now(),
@@ -131,7 +133,13 @@ export default function App() {
         propertyCount: selectedList.length,
         status: 'sent',
       };
-      const existing = JSON.parse(localStorage.getItem('guestcard_submissions') || '[]');
+      let existing;
+      try {
+        existing = JSON.parse(localStorage.getItem('guestcard_submissions') || '[]');
+      } catch (e) {
+        console.error('Failed to parse guestcard_submissions from localStorage:', e);
+        existing = [];
+      }
       existing.push(record);
       localStorage.setItem('guestcard_submissions', JSON.stringify(existing));
       // Dispatch storage event for same-tab listeners
@@ -183,19 +191,23 @@ export default function App() {
           </div>
         )}
 
-        {currentStepId === 'review' && !sent && matchedProps.length > 0 && (
+        {currentStepId === 'review' && !sent && (
           <div className="review-section">
             <PropertyMatch
               properties={matchedProps}
               selected={selectedProps}
               onToggle={handleToggleProp}
             />
-            <GuestCard
-              data={formData}
-              selectedProperties={selectedProps}
-              onSend={handleSend}
-              sending={sending}
-            />
+            {matchedProps.length > 0 ? (
+              <GuestCard
+                data={formData}
+                selectedProperties={selectedProps}
+                onSend={handleSend}
+                sending={sending}
+              />
+            ) : (
+              <button className="restart-btn" onClick={handleRestart}>Start New Search</button>
+            )}
           </div>
         )}
 
@@ -212,6 +224,9 @@ export default function App() {
       {!sent && currentStep && currentStep.type !== 'matching' && currentStep.type !== 'review' && currentStep.type !== 'sent' && !typing && (
         <div className="chat-footer">
           <ChatInput step={currentStep} onSubmit={handleSubmit} />
+          {currentStepId !== 'welcome' && (
+            <button className="start-over-btn" onClick={handleRestart}>Start Over</button>
+          )}
         </div>
       )}
     </div>

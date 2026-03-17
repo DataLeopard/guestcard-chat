@@ -407,6 +407,23 @@ body {
   background: rgba(99,102,241,0.2);
 }
 
+.start-over-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  color: #6b7280;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.2s;
+}
+.start-over-btn:hover {
+  color: #a5b4fc;
+}
+
 /* Scrollbar */
 .chat-body::-webkit-scrollbar { width: 4px; }
 .chat-body::-webkit-scrollbar-track { background: transparent; }

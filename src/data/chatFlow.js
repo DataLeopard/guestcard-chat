@@ -15,6 +15,7 @@ export const steps = [
     type: 'text',
     field: 'fullName',
     placeholder: 'e.g. Marcus Johnson',
+    validate: (v) => v.trim().length >= 2 ? null : 'Please enter your full name (at least 2 characters)',
     next: () => 'email',
   },
   {
@@ -32,6 +33,7 @@ export const steps = [
     type: 'text',
     field: 'phone',
     placeholder: '(512) 555-0000',
+    validate: (v) => /^[\d\s()+-]{7,}$/.test(v) ? null : 'Please enter a valid phone number (at least 7 digits)',
     next: () => 'moveIn',
   },
   {
