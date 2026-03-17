@@ -5,6 +5,8 @@ import { BotBubble, UserBubble } from './components/ChatBubble';
 import ChatInput from './components/ChatInput';
 import PropertyMatch from './components/PropertyMatch';
 import GuestCard from './components/GuestCard';
+import ProgressBar from './components/ProgressBar';
+import SuccessScreen from './components/SuccessScreen';
 
 export default function App() {
   const [messages, setMessages] = useState([]);
@@ -175,6 +177,8 @@ export default function App() {
         </div>
       </header>
 
+      {!sent && <ProgressBar currentStepId={currentStepId} />}
+
       <div className="chat-body">
         {messages.map((msg, i) => (
           msg.from === 'bot'
@@ -212,10 +216,11 @@ export default function App() {
         )}
 
         {sent && (
-          <div className="sent-section">
-            <div className="sent-badge">Guest Card Sent</div>
-            <button className="restart-btn" onClick={handleRestart}>Start New Search</button>
-          </div>
+          <SuccessScreen
+            formData={formData}
+            selectedProps={selectedProps}
+            onRestart={handleRestart}
+          />
         )}
 
         <div ref={bottomRef} />
