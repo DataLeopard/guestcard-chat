@@ -135,17 +135,20 @@ export default function App() {
         propertyCount: selectedList.length,
         status: 'sent',
       };
-      let existing;
-      try {
-        existing = JSON.parse(localStorage.getItem('guestcard_submissions') || '[]');
-      } catch (e) {
-        console.error('Failed to parse guestcard_submissions from localStorage:', e);
-        existing = [];
-      }
-      existing.push(record);
-      localStorage.setItem('guestcard_submissions', JSON.stringify(existing));
-      // Dispatch storage event for same-tab listeners
-      window.dispatchEvent(new StorageEvent('storage', { key: 'guestcard_submissions' }));
+      // Save to shared API server (and localStorage as fallback)
+      fetch('http://localhost:3001/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      }).catch(() => {
+        // Fallback to localStorage if API is not running
+        let existing;
+        try {
+          existing = JSON.parse(localStorage.getItem('guestcard_submissions') || '[]');
+        } catch { existing = []; }
+        existing.push(record);
+        localStorage.setItem('guestcard_submissions', JSON.stringify(existing));
+      });
 
       setSending(false);
       setSent(true);
